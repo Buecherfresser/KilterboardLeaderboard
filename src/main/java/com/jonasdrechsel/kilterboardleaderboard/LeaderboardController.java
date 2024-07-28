@@ -1,19 +1,21 @@
 package com.jonasdrechsel.kilterboardleaderboard;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/kilter")
 public class LeaderboardController {
+    private final KilterExternalApiService kilterApi;
+
     @Autowired
-    private KilterExternalApiService kilterApi;
+    public LeaderboardController (KilterExternalApiService kilterApi) {
+        this.kilterApi = kilterApi;
+    }
 
     @GetMapping("/find/{name}")
-    public ResponseEntity<String> findUser(@PathVariable("name") String name) {
-        System.out.println(name);
-        return ResponseEntity.ok(name);
+    public Mono<String> findUser(@PathVariable("name") String name) {
+        return kilterApi.searchUser(name);
     }
 }

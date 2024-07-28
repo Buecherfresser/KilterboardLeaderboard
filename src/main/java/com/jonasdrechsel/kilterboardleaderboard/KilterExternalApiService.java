@@ -7,14 +7,15 @@ import reactor.core.publisher.Mono;
 
 @Service
 public class KilterExternalApiService {
-    private String apiToken;
-    @Autowired
-    public KilterExternalApiService(String apiToken) {
-        this.apiToken = apiToken;
-    }
+    private final String apiToken;
+    private final WebClient.Builder webClientBuilder;
 
     @Autowired
-    private WebClient.Builder webClientBuilder;
+    public KilterExternalApiService(String apiToken, WebClient.Builder webClientBuilder) {
+        this.apiToken = apiToken;
+        this.webClientBuilder = webClientBuilder;
+    }
+
 
     public Mono<String> searchUser(String name) {
         return webClientBuilder.build()
