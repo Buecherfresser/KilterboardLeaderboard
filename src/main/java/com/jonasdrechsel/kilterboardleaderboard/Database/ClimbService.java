@@ -15,12 +15,14 @@ public class ClimbService {
     private final ClimbRespository climbRepository;
     private final KilterExternalApiService kilterApi;
     private final UserService userService;
+    private final ClimbRespository climbRespository;
 
     @Autowired
-    public ClimbService(ClimbRespository climbRepository, KilterExternalApiService kilterApi, UserService userService){
+    public ClimbService(ClimbRespository climbRepository, KilterExternalApiService kilterApi, UserService userService, ClimbRespository climbRespository){
         this.climbRepository = climbRepository;
         this.kilterApi = kilterApi;
         this.userService = userService;
+        this.climbRespository = climbRespository;
     }
     public Climb saveUser(Climb climb) {
         return climbRepository.save(climb);
@@ -73,8 +75,8 @@ public class ClimbService {
 //        return kilterApi.searchUser(name);
 //    }
 
-    public Climb[] getClimbs(int id) {
-        return kilterApi.getClimbs(id);
+    public List<Climb> getClimbs(int id) {
+        return climbRespository.findByUserIdOrderByPpDesc(id);
     }
 
 }

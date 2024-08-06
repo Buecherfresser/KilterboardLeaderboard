@@ -37,7 +37,7 @@ public class LeaderboardController {
         return new ResponseEntity<>(userService.getAll(), httpHeaders, HttpStatus.OK);
     }
     @GetMapping("/climbs/{id}")
-    public ResponseEntity<Climb[]> getClimbs(@PathVariable("id") int id) {
+    public ResponseEntity<List<Climb>> getClimbs(@PathVariable("id") int id) {
         return new ResponseEntity<>(climbService.getClimbs(id), httpHeaders, HttpStatus.OK);
     }
 

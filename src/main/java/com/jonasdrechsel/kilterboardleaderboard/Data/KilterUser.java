@@ -43,6 +43,10 @@ public class KilterUser {
         return type;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public int getPp() {
         return pp;
     }
@@ -61,10 +65,6 @@ public class KilterUser {
 
     public long getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getUsername() {

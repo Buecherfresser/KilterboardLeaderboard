@@ -13,10 +13,10 @@ public class Climb {
     @JsonProperty
     private String uuid;
     @Id
-    @JsonProperty
-    private String climb_uuid;
-    @JsonProperty
-    private long user_id;
+    @JsonProperty("climb_uuid")
+    private String climbUuid;
+    @JsonProperty("user_id")
+    private long userId;
     @JsonProperty
     private int angle;
     @JsonProperty
@@ -45,16 +45,16 @@ public class Climb {
         return angle;
     }
 
-    public String getClimb_uuid() {
-        return climb_uuid;
+    public String getClimbUuid() {
+        return climbUuid;
     }
 
     public String getUuid() {
         return uuid;
     }
 
-    public void setClimb_uuid(String climb_uuid) {
-        this.climb_uuid = climb_uuid;
+    public void setClimb_uuid(String climbUuid) {
+        this.climbUuid = climbUuid;
     }
 
     public void setUuid(String uuid) {
@@ -74,8 +74,8 @@ public class Climb {
     }
 
 
-    public long getUser_id() {
-        return user_id;
+    public long getUserId() {
+        return userId;
     }
 
     public String getComment() {
@@ -126,7 +126,7 @@ public class Climb {
         this.type = type;
     }
 
-    public void setUser_id(long user_id) {
-        this.user_id = user_id;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 }
