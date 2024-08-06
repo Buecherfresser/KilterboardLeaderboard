@@ -31,9 +31,7 @@ public class AppConfig {
         String response = webClientBuilder.build().post()
                 .uri(apiUrl + loginEndpoint)
                 .header("Content-Type", "Application/json")
-                // TODO check wether php session id works
                 .header("Cookie", "PHPSESSID=12345678")
-                // TODO: check wether all params are being sent
                 .bodyValue(new LoginRequest(username, password))
                 .retrieve()
                 .bodyToMono(String.class)

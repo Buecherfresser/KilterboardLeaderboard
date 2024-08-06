@@ -3,6 +3,8 @@ package com.jonasdrechsel.kilterboardleaderboard.Data;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name="users")
 public class KilterUser {
@@ -14,7 +16,7 @@ public class KilterUser {
     private String type;
     @Id
     @JsonProperty
-    private int id;
+    private long id;
     @JsonProperty
     private String username;
     @JsonProperty
@@ -25,6 +27,9 @@ public class KilterUser {
     private boolean isVerified;
     @JsonProperty("created_at")
     private String createdAt;
+    @ElementCollection
+    private List<Integer> difficulties;
+    private int pp;
 
 //    public Long getKey() {
 //        return userKey;
@@ -38,11 +43,23 @@ public class KilterUser {
         return type;
     }
 
+    public int getPp() {
+        return pp;
+    }
+
+    public void setPp(int pp) {
+        this.pp = pp;
+    }
+
+    public void setDifficulties(List<Integer> difficulties) {
+        this.difficulties = difficulties;
+    }
+
     public void setType(String type) {
         this.type = type;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
