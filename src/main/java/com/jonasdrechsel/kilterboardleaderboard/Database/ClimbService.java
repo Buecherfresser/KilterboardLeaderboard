@@ -3,9 +3,14 @@ package com.jonasdrechsel.kilterboardleaderboard.Database;
 import com.jonasdrechsel.kilterboardleaderboard.Data.Climb;
 import com.jonasdrechsel.kilterboardleaderboard.Data.KilterUser;
 import com.jonasdrechsel.kilterboardleaderboard.KilterExternalApiService;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.ErrorResponseException;
+import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -36,13 +41,15 @@ public class ClimbService {
     }
     public Climb[] updateClimbs(KilterUser user) {
         long userId = user.getId();
-        Climb[] climbs = null;
+        Climb[] climbs;
         try {
             climbs = kilterApi.getClimbs(user.getId());
+            Arrays.parallelSetAll(climbs, i -> addNameToClimb(climbs[i]));
         }
         catch (Error e) {
             throw new Error("User does not have any climbs yet.");
         }
+
         Arrays.sort(climbs, new Comparator<Climb>() {
             @Override
             public int compare(Climb o1, Climb o2) {
@@ -54,7 +61,6 @@ public class ClimbService {
         int pp = 0;
         for (Climb c : climbs) {
             pp = calculatePp(c.getDifficulty(), counter);
-            System.out.println(pp);
             totalPp += pp;
             c.setPp(pp);
             counter++;
@@ -78,5 +84,14 @@ public class ClimbService {
     public List<Climb> getClimbs(int id) {
         return climbRespository.findByUserIdOrderByPpDesc(id);
     }
-
+    private String extractH1Content(String html) {
+        Document document = Jsoup.parse(html);
+        return document.select("h1").text();
+    }
+    private Climb addNameToClimb(Climb climb) {
+        String response = kilterApi.getClimbName(climb.getClimbUuid()).block();
+        String name = extractH1Content(response);
+        climb.setName(name);
+        return climb;
+    }
 }

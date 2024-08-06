@@ -34,6 +34,19 @@ public class Climb {
     @JsonProperty("climbed_at")
     private String date;
     private int pp;
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setClimbUuid(String climbUuid) {
+        this.climbUuid = climbUuid;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public int getPp() {
         return pp;
@@ -51,10 +64,6 @@ public class Climb {
 
     public String getUuid() {
         return uuid;
-    }
-
-    public void setClimb_uuid(String climbUuid) {
-        this.climbUuid = climbUuid;
     }
 
     public void setUuid(String uuid) {

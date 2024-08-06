@@ -5,10 +5,18 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jonasdrechsel.kilterboardleaderboard.Data.Climb;
 import com.jonasdrechsel.kilterboardleaderboard.Data.KilterUser;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.hibernate.Hibernate.map;
 
 @Service
 public class KilterExternalApiService {
@@ -69,4 +77,24 @@ public class KilterExternalApiService {
         }
         return climbs;
     }
+
+    public Mono<String> getClimbName(String uuid) {
+        return webClientBuilder.build()
+                .get()
+                .uri("https://kilterboardapp.com/climbs/" + uuid)
+                .header("Accept", "*/*")
+                .retrieve()
+                .bodyToMono(String.class);
+
+//                .map(this::extractH1Content);
+    }
+
+//    public Mono<List<String>> getClimbNameParallel(Climb[] climbs) {
+//        return Flux.fromIterable(Arrays.asList(climbs))
+//                .map(Climb::getClimbUuid)
+//                .flatMap(this::getClimbName)
+//                .collectList();
+//    }
+
+
 }
