@@ -25,10 +25,10 @@ public class AppConfig {
     private String password;
 
     @Bean
-    public String apiKey(WebClient.Builder webClientBuilder, ObjectMapper objectMapper) throws Exception {
+    public String apiKey(WebClient webClient, ObjectMapper objectMapper) throws Exception {
         String token = "";
         try {
-        String response = webClientBuilder.build().post()
+        String response = webClient.post()
                 .uri(apiUrl + loginEndpoint)
                 .header("Content-Type", "Application/json")
                 .header("Cookie", "PHPSESSID=12345678")

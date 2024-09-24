@@ -3,6 +3,7 @@ package com.jonasdrechsel.kilterboardleaderboard.Database;
 import com.jonasdrechsel.kilterboardleaderboard.Data.Climb;
 import com.jonasdrechsel.kilterboardleaderboard.Data.KilterUser;
 import com.jonasdrechsel.kilterboardleaderboard.KilterExternalApiService;
+import jakarta.transaction.Transactional;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +30,12 @@ public class ClimbService {
         this.userService = userService;
         this.climbRespository = climbRespository;
     }
-    public Climb saveUser(Climb climb) {
+    public Climb saveClimb(Climb climb) {
         return climbRepository.save(climb);
     }
-    public void deleteUser(String id) {
-        climbRepository.deleteById(id);
-    }
+//    public void deleteUser(String id) {
+//        climbRepository.deleteById(id);
+//    }
 
     public List<Climb> getAll() {
         return climbRepository.findAll();
@@ -44,12 +45,16 @@ public class ClimbService {
         Climb[] climbs;
         try {
             climbs = kilterApi.getClimbs(user.getId());
-            Arrays.parallelSetAll(climbs, i -> addNameToClimb(climbs[i]));
         }
         catch (Error e) {
             throw new Error("User does not have any climbs yet.");
         }
-
+        if (climbs == null) {
+            user.setPp(0);
+            userService.saveUser(user);
+            return new Climb[0];
+        }
+        Arrays.parallelSetAll(climbs, i -> addNameToClimb(climbs[i]));
         Arrays.sort(climbs, new Comparator<Climb>() {
             @Override
             public int compare(Climb o1, Climb o2) {
@@ -73,25 +78,37 @@ public class ClimbService {
     }
 
     private int calculatePp(int difficulty, int n) {
-        double purePP = 0.1 * Math.pow(difficulty, 2.0);
+        double purePP = 0;
+        if (difficulty > 10) {
+            purePP = 0.2 * Math.pow(difficulty - 10, 2.0);
+        }
         return (int) (Math.round((purePP * Math.pow(0.9, n))));
     }
 
-//    public KilterUser[] searchUser(String name) {
-//        return kilterApi.searchUser(name);
-//    }
-
-    public List<Climb> getClimbs(int id) {
-        return climbRespository.findByUserIdOrderByPpDesc(id);
+    public List<Climb> getClimbs(long id) {
+        return climbRespository.findClimbsByUserIdOrderByPpDesc(id);
     }
     private String extractH1Content(String html) {
         Document document = Jsoup.parse(html);
         return document.select("h1").text();
     }
     private Climb addNameToClimb(Climb climb) {
-        String response = kilterApi.getClimbName(climb.getClimbUuid()).block();
-        String name = extractH1Content(response);
+        String name = "";
+        List<Climb> climbsDatabase = climbRepository.findClimbsByClimbUuid(climb.getClimbUuid());
+        for (Climb c : climbsDatabase) {
+            if (!c.getName().isBlank()) {
+                name = c.getName();
+            }
+        }
+        if (name.isBlank()) {
+            String response = kilterApi.getClimbName(climb.getClimbUuid()).block();
+            name = extractH1Content(response);
+        }
         climb.setName(name);
         return climb;
+    }
+    @Transactional
+    public void removeClimbs(long id) {
+        climbRepository.removeClimbsByUserId(id);
     }
 }

@@ -5,30 +5,22 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jonasdrechsel.kilterboardleaderboard.Data.Climb;
 import com.jonasdrechsel.kilterboardleaderboard.Data.KilterUser;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.Arrays;
-import java.util.List;
-
-import static org.hibernate.Hibernate.map;
 
 @Service
 public class KilterExternalApiService {
     private final String apiToken;
-    private final WebClient.Builder webClientBuilder;
+    private final WebClient webClient;
     private final ObjectMapper objectMapper;
 
 
     @Autowired
-    public KilterExternalApiService(String apiToken, WebClient.Builder webClientBuilder) {
+    public KilterExternalApiService(String apiToken, WebClient webClient) {
         this.apiToken = apiToken;
-        this.webClientBuilder = webClientBuilder;
+        this.webClient = webClient;
         objectMapper = new ObjectMapper();
         objectMapper.configure(JsonParser.Feature.INCLUDE_SOURCE_IN_LOCATION, true);
     }
@@ -36,7 +28,7 @@ public class KilterExternalApiService {
 
     public KilterUser[] searchUser(String name) {
 
-        Mono<String> userMono = webClientBuilder.build()
+        Mono<String> userMono = webClient
                 .get()
                 .uri("https://kilterboardapp.com/explore?q=" + name + "&t=user")
                 .header("Accept", "application/json, text/plain, */*")
@@ -59,7 +51,7 @@ public class KilterExternalApiService {
 
 
     public Climb[] getClimbs(long userId) {
-        Mono<String> ascentsMono = webClientBuilder.build()
+        Mono<String> ascentsMono = webClient
                 .get()
                 .uri("https://kilterboardapp.com/users/" + userId +"/logbook?types=bid,ascent")
                 .header("Accept", "application/json, text/plain, */*")
@@ -79,7 +71,7 @@ public class KilterExternalApiService {
     }
 
     public Mono<String> getClimbName(String uuid) {
-        return webClientBuilder.build()
+        return webClient
                 .get()
                 .uri("https://kilterboardapp.com/climbs/" + uuid)
                 .header("Accept", "*/*")

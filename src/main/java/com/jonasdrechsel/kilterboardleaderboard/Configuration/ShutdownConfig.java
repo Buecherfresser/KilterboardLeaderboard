@@ -20,18 +20,18 @@ public class ShutdownConfig {
     @Value("${external.api.logout.endpoint}")
     private String logoutEndpoint;
 
-    private final WebClient.Builder webClientBuilder;
+    private final WebClient webClient;
     private final String apiKey;
 
     @Autowired
-    public ShutdownConfig(WebClient.Builder webClientBuilder, String apiKey) {
-        this.webClientBuilder = webClientBuilder;
+    public ShutdownConfig(WebClient webClient, String apiKey) {
+        this.webClient = webClient;
         this.apiKey = apiKey;
     }
 
     @EventListener
     public void onShutdown(ContextClosedEvent event) {
-        webClientBuilder.build().delete()
+        webClient.delete()
                 .uri(apiUrl + logoutEndpoint + apiKey)
                 .header("Cookie", "PHPSESSID=12345678")
                 .header("Authorization", "Bearer " + apiKey)
@@ -43,5 +43,6 @@ public class ShutdownConfig {
 //                })
                 .bodyToMono(Void.class)
                 .block();
+        System.out.println("Logged out of Kilter Api.");
     }
 }

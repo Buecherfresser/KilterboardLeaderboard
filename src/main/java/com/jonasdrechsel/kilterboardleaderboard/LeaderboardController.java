@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@CrossOrigin
 @RestController
 @RequestMapping("/kilter")
 public class LeaderboardController {
@@ -33,8 +33,7 @@ public class LeaderboardController {
     }
     @GetMapping("/leaderboard")
     public ResponseEntity<List<KilterUser>> getLeaderboard() {
-
-        return new ResponseEntity<>(userService.getAll(), httpHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(userService.getOrderedByPp(), httpHeaders, HttpStatus.OK);
     }
     @GetMapping("/climbs/{id}")
     public ResponseEntity<List<Climb>> getClimbs(@PathVariable("id") int id) {
@@ -51,6 +50,7 @@ public class LeaderboardController {
 
     @DeleteMapping("/user/remove/{id}")
     public ResponseEntity<Void> removeUser(@PathVariable("id") long id) {
+        climbService.removeClimbs(id);
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
