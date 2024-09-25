@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.jonasdrechsel.kilterboardleaderboard.KilterBoardLeaderboardApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.525 s -- in com.jonasdrechsel.kilterboardleaderboard.KilterBoardLeaderboardApplicationTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.532 s -- in com.jonasdrechsel.kilterboardleaderboard.KilterBoardLeaderboardApplicationTests

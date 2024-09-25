@@ -3,7 +3,6 @@ package com.jonasdrechsel.kilterboardleaderboard.Database;
 import com.jonasdrechsel.kilterboardleaderboard.Data.Climb;
 import com.jonasdrechsel.kilterboardleaderboard.Data.KilterUser;
 import com.jonasdrechsel.kilterboardleaderboard.KilterExternalApiService;
-import com.jonasdrechsel.kilterboardleaderboard.LeaderboardController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +22,7 @@ public class LeaderboardService {
         this.userService = userService;
         this.kilterApi = kilterExternalApiService;
     }
+
     public List<KilterUser> refreshLeaderboard() {
         List<KilterUser> users = userService.getAll();
         for (KilterUser user : users) {
@@ -36,8 +36,7 @@ public class LeaderboardService {
         Climb[] climbs;
         try {
             climbs = kilterApi.getClimbs(user.getId());
-        }
-        catch (Error e) {
+        } catch (Error e) {
             throw new Error("User does not have any climbs yet.");
         }
         if (climbs == null) {
@@ -57,6 +56,7 @@ public class LeaderboardService {
         int[] pp = new int[2];
         int ascents = 0;
         int flashes = 0;
+        int highestDifficulty = 0;
         for (Climb c : climbs) {
             pp = climbService.calculatePp(c.getDifficulty(), 0);
             c.setPp(pp[0]);
@@ -69,11 +69,14 @@ public class LeaderboardService {
                     flashes++;
                 }
             }
-
+            if (c.getDifficulty() > highestDifficulty) {
+                highestDifficulty = c.getDifficulty();
+            }
         }
         user.setPp(totalPp);
         user.setAscents(ascents);
         user.setFlashes(flashes);
+        user.setHighestDifficulty(highestDifficulty);
         userService.saveUser(user);
 //        userService.updatePp(user, totalPp);
         return climbs;

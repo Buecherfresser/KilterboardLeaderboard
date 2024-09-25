@@ -1,6 +1,5 @@
 package com.jonasdrechsel.kilterboardleaderboard.Database;
 
-import com.jonasdrechsel.kilterboardleaderboard.Data.Climb;
 import com.jonasdrechsel.kilterboardleaderboard.Data.KilterUser;
 import com.jonasdrechsel.kilterboardleaderboard.KilterExternalApiService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,7 @@ public class UserService {
     private final KilterExternalApiService kilterApi;
 
     @Autowired
-    public UserService(UserRepository userRepository, KilterExternalApiService kilterApi){
+    public UserService(UserRepository userRepository, KilterExternalApiService kilterApi) {
         this.userRepository = userRepository;
         this.kilterApi = kilterApi;
     }
@@ -25,6 +24,7 @@ public class UserService {
     public KilterUser saveUser(KilterUser kilterUser) {
         return userRepository.save(kilterUser);
     }
+
     public void deleteUser(long id) {
         userRepository.deleteById(id);
     }
@@ -32,11 +32,17 @@ public class UserService {
     public List<KilterUser> getAll() {
         return userRepository.findAll();
     }
+
     public KilterUser[] searchUser(String name) {
         return kilterApi.searchUser(name);
     }
-    public List<KilterUser> getOrderedByPp(){
+
+    public List<KilterUser> getOrderedByPp() {
         return userRepository.findAll(Sort.by(Sort.Direction.DESC, "pp"));
+    }
+
+    public Optional<KilterUser> getUserByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 //    public void updatePp(KilterUser kilterUser, int pp) {
 //        Optional<KilterUser> databaseUser = userRepository.findById(kilterUser.getId());

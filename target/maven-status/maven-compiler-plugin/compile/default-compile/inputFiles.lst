@@ -3,10 +3,12 @@
 /Users/jonas/IdeaProjects/KilterBoardLeaderboard/src/main/java/com/jonasdrechsel/kilterboardleaderboard/Configuration/WebClientConfig.java
 /Users/jonas/IdeaProjects/KilterBoardLeaderboard/src/main/java/com/jonasdrechsel/kilterboardleaderboard/Data/Climb.java
 /Users/jonas/IdeaProjects/KilterBoardLeaderboard/src/main/java/com/jonasdrechsel/kilterboardleaderboard/Data/KilterUser.java
-/Users/jonas/IdeaProjects/KilterBoardLeaderboard/src/main/java/com/jonasdrechsel/kilterboardleaderboard/Database/ClimbRespository.java
+/Users/jonas/IdeaProjects/KilterBoardLeaderboard/src/main/java/com/jonasdrechsel/kilterboardleaderboard/Database/ClimbRepository.java
 /Users/jonas/IdeaProjects/KilterBoardLeaderboard/src/main/java/com/jonasdrechsel/kilterboardleaderboard/Database/ClimbService.java
+/Users/jonas/IdeaProjects/KilterBoardLeaderboard/src/main/java/com/jonasdrechsel/kilterboardleaderboard/Database/LeaderboardService.java
 /Users/jonas/IdeaProjects/KilterBoardLeaderboard/src/main/java/com/jonasdrechsel/kilterboardleaderboard/Database/UserRepository.java
 /Users/jonas/IdeaProjects/KilterBoardLeaderboard/src/main/java/com/jonasdrechsel/kilterboardleaderboard/Database/UserService.java
 /Users/jonas/IdeaProjects/KilterBoardLeaderboard/src/main/java/com/jonasdrechsel/kilterboardleaderboard/KilterBoardLeaderboardApplication.java
 /Users/jonas/IdeaProjects/KilterBoardLeaderboard/src/main/java/com/jonasdrechsel/kilterboardleaderboard/KilterExternalApiService.java
 /Users/jonas/IdeaProjects/KilterBoardLeaderboard/src/main/java/com/jonasdrechsel/kilterboardleaderboard/LeaderboardController.java
+/Users/jonas/IdeaProjects/KilterBoardLeaderboard/src/main/java/com/jonasdrechsel/kilterboardleaderboard/ScheduleTasks.java

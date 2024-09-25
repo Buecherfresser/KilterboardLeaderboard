@@ -8,7 +8,9 @@ import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClimbService {
@@ -16,10 +18,11 @@ public class ClimbService {
     private final KilterExternalApiService kilterApi;
 
     @Autowired
-    public ClimbService(ClimbRepository climbRepository, KilterExternalApiService kilterApi){
+    public ClimbService(ClimbRepository climbRepository, KilterExternalApiService kilterApi) {
         this.climbRepository = climbRepository;
         this.kilterApi = kilterApi;
     }
+
     public Climb saveClimb(Climb climb) {
         return climbRepository.save(climb);
     }
@@ -37,19 +40,23 @@ public class ClimbService {
         if (difficulty > 10) {
             purePP = 0.2 * Math.pow(difficulty - 10, 2.0);
         }
-        return new int[] {(int) purePP, (int) (Math.round((purePP * Math.pow(0.9, n))))};
+        return new int[]{(int) purePP, (int) (Math.round((purePP * Math.pow(0.9, n))))};
     }
 
     public List<Climb> getClimbs(long id) {
-        return climbRepository.findClimbsByUserIdOrderByPpDesc(id);
+        Optional<List<Climb>> optionalClimbList = climbRepository.findClimbsByUserIdOrderByPpDesc(id);
+        return optionalClimbList.orElseGet(ArrayList::new);
     }
+
     private String extractH1Content(String html) {
         Document document = Jsoup.parse(html);
         return document.select("h1").text();
     }
+
     public Climb addNameToClimb(Climb climb) {
         String name = "";
-        List<Climb> climbsDatabase = climbRepository.findClimbsByClimbUuid(climb.getClimbUuid());
+        Optional<List<Climb>> optionalClimbsDatabase = climbRepository.findClimbsByClimbUuid(climb.getClimbUuid());
+        List<Climb> climbsDatabase = optionalClimbsDatabase.orElseGet(ArrayList::new);
         for (Climb c : climbsDatabase) {
             if (!c.getName().isBlank()) {
                 name = c.getName();
@@ -62,6 +69,7 @@ public class ClimbService {
         climb.setName(name);
         return climb;
     }
+
     @Transactional
     public void removeClimbs(long id) {
         climbRepository.removeClimbsByUserId(id);

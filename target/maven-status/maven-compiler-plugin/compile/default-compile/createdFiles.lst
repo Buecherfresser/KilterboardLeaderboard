@@ -4,11 +4,9 @@ com/jonasdrechsel/kilterboardleaderboard/Configuration/ShutdownConfig.class
 com/jonasdrechsel/kilterboardleaderboard/KilterExternalApiService.class
 com/jonasdrechsel/kilterboardleaderboard/Configuration/WebClientConfig.class
 com/jonasdrechsel/kilterboardleaderboard/Configuration/AppConfig.class
-com/jonasdrechsel/kilterboardleaderboard/Database/ClimbService$1.class
 com/jonasdrechsel/kilterboardleaderboard/Configuration/AppConfig$LoginRequest.class
 com/jonasdrechsel/kilterboardleaderboard/Database/UserService.class
 com/jonasdrechsel/kilterboardleaderboard/Database/ClimbService.class
 com/jonasdrechsel/kilterboardleaderboard/Data/Climb.class
 com/jonasdrechsel/kilterboardleaderboard/Data/KilterUser.class
-com/jonasdrechsel/kilterboardleaderboard/Database/ClimbRespository.class
 com/jonasdrechsel/kilterboardleaderboard/KilterBoardLeaderboardApplication.class
