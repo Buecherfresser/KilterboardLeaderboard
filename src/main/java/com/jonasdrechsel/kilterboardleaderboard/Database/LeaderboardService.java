@@ -60,6 +60,7 @@ public class LeaderboardService {
         for (Climb c : climbs) {
             pp = climbService.calculatePp(c.getDifficulty(), 0);
             c.setPp(pp[0]);
+            c.setPpWeighted(pp[1]);
             climbService.saveClimb(c);
             if (c.getType().equals("ascent")) {
                 pp = climbService.calculatePp(c.getDifficulty(), ascents);
@@ -78,7 +79,6 @@ public class LeaderboardService {
         user.setFlashes(flashes);
         user.setHighestDifficulty(highestDifficulty);
         userService.saveUser(user);
-//        userService.updatePp(user, totalPp);
         return climbs;
     }
 }

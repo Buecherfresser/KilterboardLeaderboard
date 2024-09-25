@@ -2,7 +2,9 @@ package com.jonasdrechsel.kilterboardleaderboard.Data;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
@@ -34,10 +36,19 @@ public class Climb {
     @JsonProperty("climbed_at")
     private String date;
     private int pp;
+    private int ppWeighted;
     private String name;
 
     public String getName() {
         return name;
+    }
+
+    public void setPpWeighted(int ppWeighted) {
+        this.ppWeighted = ppWeighted;
+    }
+
+    public int getPpWeighted() {
+        return ppWeighted;
     }
 
     public void setClimbUuid(String climbUuid) {
@@ -51,9 +62,11 @@ public class Climb {
     public int getPp() {
         return pp;
     }
+
     public void setPp(int pp) {
         this.pp = pp;
     }
+
     public int getAngle() {
         return angle;
     }

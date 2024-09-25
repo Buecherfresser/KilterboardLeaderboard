@@ -1,15 +1,15 @@
 package com.jonasdrechsel.kilterboardleaderboard.Data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.*;
-
-import java.util.List;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class KilterUser {
 
-//    @Id
+    //    @Id
 //    @GeneratedValue(strategy = GenerationType.AUTO)
 //    private Long userKey;
     @JsonProperty("_type")
@@ -27,11 +27,12 @@ public class KilterUser {
     private boolean isVerified;
     @JsonProperty("created_at")
     private String createdAt;
-//    @ElementCollection
+    //    @ElementCollection
 //    private List<Integer> climbs;
     private int pp;
     private int ascents;
     private int flashes;
+    private int highestDifficulty;
 
 //    public Long getKey() {
 //        return userKey;
@@ -119,6 +120,14 @@ public class KilterUser {
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public int getHighestDifficulty() {
+        return highestDifficulty;
+    }
+
+    public void setHighestDifficulty(int highestDifficulty) {
+        this.highestDifficulty = highestDifficulty;
     }
 
     @Override
