@@ -17,9 +17,9 @@ public class UserService {
     private final KilterExternalApiService kilterApi;
 
     @Autowired
-    public UserService(UserRepository userRepository, KilterExternalApiService kilterApi, KilterExternalApiService kilterApi1){
+    public UserService(UserRepository userRepository, KilterExternalApiService kilterApi){
         this.userRepository = userRepository;
-        this.kilterApi = kilterApi1;
+        this.kilterApi = kilterApi;
     }
 
     public KilterUser saveUser(KilterUser kilterUser) {

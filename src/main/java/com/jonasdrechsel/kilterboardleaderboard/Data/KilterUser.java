@@ -27,9 +27,11 @@ public class KilterUser {
     private boolean isVerified;
     @JsonProperty("created_at")
     private String createdAt;
-    @ElementCollection
-    private List<Integer> difficulties;
+//    @ElementCollection
+//    private List<Integer> climbs;
     private int pp;
+    private int ascents;
+    private int flashes;
 
 //    public Long getKey() {
 //        return userKey;
@@ -55,8 +57,20 @@ public class KilterUser {
         this.pp = pp;
     }
 
-    public void setDifficulties(List<Integer> difficulties) {
-        this.difficulties = difficulties;
+    public int getAscents() {
+        return ascents;
+    }
+
+    public int getFlashes() {
+        return flashes;
+    }
+
+    public void setAscents(int ascents) {
+        this.ascents = ascents;
+    }
+
+    public void setFlashes(int flashes) {
+        this.flashes = flashes;
     }
 
     public void setType(String type) {
