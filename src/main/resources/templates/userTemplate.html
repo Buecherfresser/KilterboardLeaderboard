@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>username</title>
+    <link rel="icon" type="image/xicon" href="../ressources/icons/polarbear2.png">
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header>
+    <div class="main-header-div">
+        <h1>Kilter Leaderboard</h1>
+        <h2 th:text="${kilterUser.username}"></h2>
+    </div>
+</header>
+<div class="table-main-div">
+    <table id="climbsTable">
+        <thead>
+        <tr>
+            <th id="climbsTable-rank">#</th>
+            <th id="climbsTable-name">Route name</th>
+            <th id="climbsTable-difficulty">Difficulty</th>
+            <th id="climbsTable-pp">PP</th>
+            <th id="climbsTable-angle">Angle</th>
+            <th id="climbsTable-tries">Tries</th>
+            <th id="climbsTable-flash">Flash</th>
+        </tr>
+        </thead>
+        <tbody id="climbsTable-body">
+        </tbody>
+    </table>
+</div>
+<script src="../userProfile.js"></script>
+<script th:inline="javascript">
+    const kilterUser = /*[[${kilterUser}]]*/ 'default';
+    console.log(kilterUser.username);
+    updateProfile(kilterUser);
+    // await updateProfile(kilterUser);
+</script>
+</body>
+</html>

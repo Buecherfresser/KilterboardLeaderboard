@@ -1,0 +1,96 @@
+h1 {
+    color: cadetblue;
+    font-size: 30px;
+}
+
+p {
+    /*border-bottom: 2px solid black;*/
+    padding: 2px;
+    margin: 1px;
+}
+
+footer {
+    padding-top: 10%;
+}
+
+table {
+    width: 100%;
+    border-spacing: 2px;
+}
+
+th, td {
+    border: 3px solid white;
+    border-collapse: collapse;
+    border-radius: 5px;
+    text-align: center;
+    padding: 5px;
+}
+
+tr:nth-child(even) {
+    background-color: #D6EEEE;
+}
+
+tr:hover {
+    background-color: #c4dfdf;
+}
+
+#leaderboard-pp {
+    width: 20%;
+}
+
+#leaderboard-rank {
+    width: 20%;
+}
+
+#leaderboard-lastUpdate {
+    width: 20%;
+}
+
+/*#refresh {*/
+/*    transform: rotate(180deg);*/
+/*}*/
+
+#refresh {
+    transform-origin: 50% 50%;
+    transition: all 300ms ease;
+}
+
+.functionButton {
+    height: 50px;
+    width: 50px;
+    margin-right: 5px;
+}
+
+.rotate {
+    transform: rotate(180deg);
+}
+
+#leaderboardControls {
+    max-width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+a:link {
+    color: green;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+a:visited {
+    color: pink;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+a:hover {
+    color: red;
+    background-color: transparent;
+    text-decoration: underline;
+}
+
+a:active {
+    color: yellow;
+    background-color: transparent;
+    text-decoration: underline;
+}

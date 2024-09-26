@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Kilter Leaderboard</title>
+    <link rel="icon" type="image/xicon" href="ressources/icons/polarbear2.png">
+    <!--    <link rel="stylesheet" href="style1.css">-->
+    <link rel="stylesheet" href="style.css">
+</head>
+<!--<body style="background-color:Canvas;color:CanvasText">-->
+<body>
+<header>
+    <div class="main-header-div">
+        <h1>Kilter Leaderboard</h1>
+        <p>A simple leaderboard to compete with your climbing buddies!</p>
+    </div>
+</header>
+<!--<br>-->
+<div id="leaderboard-div" class="table-main-div">
+    <table id="leaderboard" class="table-main">
+        <thead>
+        <tr>
+            <th id="leaderboard-rank">#</th>
+            <th id="leaderboard-climber">Name</th>
+            <th id="leaderboard-pp">PP</th>
+            <th id="leaderboard-ascents">Ascents</th>
+            <th id="leaderboard-flashes">Flashes</th>
+            <th id="leaderboard-highestDifficulty">Highest Difficulty</th>
+            <!--            <th id="leaderboard-lastUpdate">Last update</th>-->
+        </tr>
+        </thead>
+        <tbody id="rankedUsers">
+        </tbody>
+    </table>
+</div>
+<div id="leaderboardControls">
+    <!--    add needs to be added later on-->
+    <!--    <input type="image" src="add.png" alt="refresh" id="addUser" class="functionButton">-->
+    <input type="image" src="ressources/icons/refresh.png" alt="refresh" id="refresh" class="functionButton">
+</div>
+<!--<footer>-->
+<!--    <p>Check me out:-->
+<!--        <a href="https://github.com/Buecherfresser" target="_blank">-->
+<!--            <img src="github.png" alt="github.com" width="20" height="20">-->
+<!--        </a>-->
+<!--    </p>-->
+<!--    <p>Any bugs?-->
+<!--        <a href="mailto:jonas@meditalk.de">Send a mail!</a>-->
+<!--    </p>-->
+<!--</footer>-->
+<script type="module" src="leaderboard.js"></script>
+</body>
+</html>
