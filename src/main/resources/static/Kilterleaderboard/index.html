@@ -5,6 +5,7 @@
     <link rel="icon" type="image/xicon" href="ressources/icons/polarbear2.png">
     <!--    <link rel="stylesheet" href="style1.css">-->
     <link rel="stylesheet" href="style.css">
+    <script type="module" src="seasonChange.js" defer></script>
 </head>
 <!--<body style="background-color:Canvas;color:CanvasText">-->
 <body>
@@ -15,6 +16,11 @@
     </div>
 </header>
 <!--<br>-->
+<div id="buttons-leaderboard">
+    <h2 id="season-header">All Time</h2>
+    <p id="season-header-sub"><br></p>
+    <button id="season-button">Season 1</button>
+</div>
 <div id="leaderboard-div" class="table-main-div">
     <table id="leaderboard" class="table-main">
         <thead>
@@ -22,6 +28,7 @@
             <th id="leaderboard-rank">#</th>
             <th id="leaderboard-climber">Name</th>
             <th id="leaderboard-pp">PP</th>
+            <th id="leaderboard-ppUnweighted">Unweighted PP</th>
             <th id="leaderboard-ascents">Ascents</th>
             <th id="leaderboard-flashes">Flashes</th>
             <th id="leaderboard-highestDifficulty">Highest Difficulty</th>

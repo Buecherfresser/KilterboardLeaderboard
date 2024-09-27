@@ -56,6 +56,36 @@ p {
     unicode-bidi: isolate;
 }
 
+button {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    background-color: #393999;
+    color: #dfdfdf;
+    border: 0;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 15px;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: medium;
+}
+
+#buttons-leaderboard {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+    width: 100%;
+}
+
+#season-header {
+    margin-bottom: 10px;
+}
+
 .table-main-div {
     overflow-x: auto;
     display: flex;
@@ -139,6 +169,10 @@ td {
     width: 15%;
 }
 
+#leaderboard-ppUnweighted {
+    width: 15%;
+}
+
 #leaderboard-ascents {
     width: 15%;
 }
@@ -187,6 +221,10 @@ td {
 
 .cell4Div {
     background-color: rgba(84, 32, 238, 0.68);
+}
+
+.cell5Div {
+    background-color: rgba(193, 32, 238, 0.68);
 }
 
 .nameCellDiv {

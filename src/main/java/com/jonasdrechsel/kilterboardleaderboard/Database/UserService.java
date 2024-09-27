@@ -38,7 +38,7 @@ public class UserService {
     }
 
     public List<KilterUser> getOrderedByPp() {
-        return userRepository.findAll(Sort.by(Sort.Direction.DESC, "pp"));
+        return userRepository.findAll(Sort.by(Sort.Direction.DESC, "ppWeighted"));
     }
 
     public Optional<KilterUser> getUserByUsername(String username) {

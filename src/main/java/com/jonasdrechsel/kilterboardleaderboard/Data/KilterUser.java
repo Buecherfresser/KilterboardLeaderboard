@@ -29,7 +29,10 @@ public class KilterUser {
     private String createdAt;
     //    @ElementCollection
 //    private List<Integer> climbs;
-    private int pp;
+    private int ppWeighted;
+    private int ppUnweighted;
+    private int ppWeightedSeason1;
+    private int ppUnweightedSeason1;
     private int ascents;
     private int flashes;
     private int highestDifficulty;
@@ -42,6 +45,22 @@ public class KilterUser {
 //        this.userKey = userKey;
 //    }
 
+    public int getPpUnweightedSeason1() {
+        return ppUnweightedSeason1;
+    }
+
+    public int getPpWeightedSeason1() {
+        return ppWeightedSeason1;
+    }
+
+    public void setPpUnweightedSeason1(int unweightedPPSeason1) {
+        this.ppUnweightedSeason1 = unweightedPPSeason1;
+    }
+
+    public void setPpWeightedSeason1(int weightedPPSeason1) {
+        this.ppWeightedSeason1 = weightedPPSeason1;
+    }
+
     public String getType() {
         return type;
     }
@@ -50,12 +69,20 @@ public class KilterUser {
         this.id = id;
     }
 
-    public int getPp() {
-        return pp;
+    public int getPpWeighted() {
+        return ppWeighted;
     }
 
-    public void setPp(int pp) {
-        this.pp = pp;
+    public void setPpUnweighted(int unweightedPP) {
+        this.ppUnweighted = unweightedPP;
+    }
+
+    public int getPpUnweighted() {
+        return ppUnweighted;
+    }
+
+    public void setPpWeighted(int pp) {
+        this.ppWeighted = pp;
     }
 
     public int getAscents() {

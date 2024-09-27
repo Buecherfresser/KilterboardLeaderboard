@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/kilter")
@@ -24,7 +25,7 @@ public class LeaderboardController {
     final HttpHeaders httpHeaders;
 
     @Autowired
-    public LeaderboardController (KilterExternalApiService kilterApi, UserService userService, ClimbService climbService, LeaderboardService leaderboardService) {
+    public LeaderboardController(KilterExternalApiService kilterApi, UserService userService, ClimbService climbService, LeaderboardService leaderboardService) {
         this.userService = userService;
         this.climbService = climbService;
         httpHeaders = new HttpHeaders();
@@ -36,10 +37,19 @@ public class LeaderboardController {
     public ResponseEntity<KilterUser[]> findUser(@PathVariable("name") String name) {
         return new ResponseEntity<KilterUser[]>(userService.searchUser(name), httpHeaders, HttpStatus.OK);
     }
+
     @GetMapping("/leaderboard")
     public ResponseEntity<List<KilterUser>> getLeaderboard() {
         return new ResponseEntity<>(userService.getOrderedByPp(), httpHeaders, HttpStatus.OK);
     }
+
+    @GetMapping("/leaderboard/refresh")
+    public ResponseEntity<List<KilterUser>> refreshLeaderboard() {
+        leaderboardService.refreshLeaderboard();
+
+        return new ResponseEntity<>(leaderboardService.getLeaderboard(), httpHeaders, HttpStatus.OK);
+    }
+
     @GetMapping("/climbs/{id}")
     public ResponseEntity<List<Climb>> getClimbs(@PathVariable("id") int id) {
         return new ResponseEntity<>(climbService.getClimbs(id), httpHeaders, HttpStatus.OK);
@@ -47,15 +57,8 @@ public class LeaderboardController {
 
     @PostMapping("/user/add")
     public ResponseEntity<KilterUser> addUser(@RequestBody KilterUser kilterUser) {
-        // get all climbed grades
-        leaderboardService.updateClimbs(kilterUser);
-        // calculate pp
-        return new ResponseEntity<KilterUser>(userService.saveUser(kilterUser), HttpStatus.OK);
-    }
 
-    @GetMapping("/leaderboard/refresh")
-    public ResponseEntity<List<KilterUser>> refreshLeaderboard(){
-        return new ResponseEntity<>(leaderboardService.refreshLeaderboard(), httpHeaders, HttpStatus.OK);
+        return new ResponseEntity<KilterUser>(leaderboardService.addUser(kilterUser), HttpStatus.OK);
     }
 
     @DeleteMapping("/user/remove/{id}")

@@ -20,7 +20,7 @@ async function getLeaderboard(url) {
     }
 }
 
-async function updateLeaderboard() {
+export async function updateLeaderboard(season) {
     const url = "https://jonasdrechsel.com";
     const leaderboard = document.getElementById("leaderboard");
     const leaderBoardData = await getLeaderboard(url);
@@ -39,14 +39,16 @@ async function updateLeaderboard() {
             let cellRank = row.insertCell(0);
             let cellName = row.insertCell(1);
             let cellPP = row.insertCell(2);
-            let cellAscents = row.insertCell(3);
-            let cellFlashes = row.insertCell(4);
-            let cellHighestDifficulty = row.insertCell(5);
+            let cellPPUnweighted = row.insertCell(3);
+            let cellAscents = row.insertCell(4);
+            let cellFlashes = row.insertCell(5);
+            let cellHighestDifficulty = row.insertCell(6);
             // let cellUpdate = row.insertCell(6);
 
-            cellRank.className = "cellRank cell cell1";
-            cellName.className = "cellName cell cell2";
-            cellPP.className = "cellPP cell cell3";
+            cellRank.className = "cellRank cell cell0";
+            cellName.className = "cellName cell cell1";
+            cellPP.className = "cellPP cell cell2";
+            cellPPUnweighted.className = "cellPPWeighted cell cell3";
             cellAscents.className = "cellAscents cell cell4";
             cellFlashes.className = "cellFlashes cell cell5";
             cellHighestDifficulty.className = "cellHighestDifficulty cell cell6";
@@ -54,21 +56,34 @@ async function updateLeaderboard() {
 
             let divPP = document.createElement("div");
             divPP.className = "ppCellDiv cellDiv cell1Div"
-            divPP.innerText = user.pp;
+            if (season === 1) {
+                divPP.innerText = user.ppWeightedSeason1;
+            } else {
+                divPP.innerText = user.ppWeighted;
+            }
             cellPP.appendChild(divPP);
 
+            let divPPUnweighted = document.createElement("div");
+            divPPUnweighted.className = "ppUnweightedCellDiv cellDiv cell2Div"
+            if (season === 1) {
+                divPPUnweighted.innerText = user.ppUnweightedSeason1;
+            } else {
+                divPPUnweighted.innerText = user.ppUnweighted;
+            }
+            cellPPUnweighted.appendChild(divPPUnweighted);
+
             let divAscents = document.createElement("div");
-            divAscents.className = "ascentCellDiv cellDiv cell2Div"
+            divAscents.className = "ascentCellDiv cellDiv cell3Div"
             divAscents.innerText = user.ascents;
             cellAscents.appendChild(divAscents);
 
             let divFlashes = document.createElement("div");
-            divFlashes.className = "flashCellDiv cellDiv cell3Div"
+            divFlashes.className = "flashCellDiv cellDiv cell4Div"
             divFlashes.innerText = user.flashes;
             cellFlashes.appendChild(divFlashes);
 
             let divHighestDifficulty = document.createElement("div");
-            divHighestDifficulty.className = "highestDifficultyCellDiv cellDiv cell4Div"
+            divHighestDifficulty.className = "highestDifficultyCellDiv cellDiv cell5Div"
             divHighestDifficulty.innerText = user.highestDifficulty;
             cellHighestDifficulty.appendChild(divHighestDifficulty);
 
@@ -89,10 +104,10 @@ async function updateLeaderboard() {
     }
 }
 
-await updateLeaderboard();
-let deg = 180;
-// Buttons
 
+await updateLeaderboard(0);
+// Buttons
+let deg = 180;
 document.getElementById("refresh").onclick = async () => {
     // document.getElementById("refresh").style.transition = "all .3s ease"
     document.getElementById("refresh").style.transform = "rotate(" + deg + "deg)";
@@ -100,3 +115,4 @@ document.getElementById("refresh").onclick = async () => {
     await updateLeaderboard();
     // document.getElementById("refresh").style.transition = "all .3s ease"
 };
+

@@ -10,23 +10,25 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "climbs")
 public class Climb {
+    // The Id Field ist uuidKilter + climbUuidKilter
+    @Id
+    private String id;
     @JsonProperty("_type")
     private String type;
-    @JsonProperty
-    private String uuid;
-    @Id
+    @JsonProperty("uuid")
+    private String uuidKilter;
     @JsonProperty("climb_uuid")
-    private String climbUuid;
+    private String climbUuidKilter;
     @JsonProperty("user_id")
     private long userId;
     @JsonProperty
     private int angle;
-    @JsonProperty
-    private boolean is_mirror;
-    @JsonProperty
-    private int attempt_id;
-    @JsonProperty
-    private int bid_count;
+    @JsonProperty("is_mirror")
+    private boolean isMirror;
+    @JsonProperty("attempt_id")
+    private int attemptId;
+    @JsonProperty("bid_count")
+    private int bidCount;
     @JsonProperty
     private int difficulty;
     @JsonProperty
@@ -35,12 +37,42 @@ public class Climb {
     private String comment;
     @JsonProperty("climbed_at")
     private String date;
-    private int pp;
+    private int ppUnweighted;
     private int ppWeighted;
+    private int ppUnweightedSeason1;
+    private int ppWeightedSeason1;
     private String name;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setMirror(boolean mirror) {
+        isMirror = mirror;
+    }
 
     public String getName() {
         return name;
+    }
+
+    public void setPpUnweightedSeason1(int ppUnweightedSeason1) {
+        this.ppUnweightedSeason1 = ppUnweightedSeason1;
+    }
+
+    public void setPpWeightedSeason1(int ppWeightedSeason1) {
+        this.ppWeightedSeason1 = ppWeightedSeason1;
+    }
+
+    public int getPpUnweightedSeason1() {
+        return ppUnweightedSeason1;
+    }
+
+    public int getPpWeightedSeason1() {
+        return ppWeightedSeason1;
     }
 
     public void setPpWeighted(int ppWeighted) {
@@ -51,44 +83,44 @@ public class Climb {
         return ppWeighted;
     }
 
-    public void setClimbUuid(String climbUuid) {
-        this.climbUuid = climbUuid;
+    public void setClimbUuidKilter(String climbUuid) {
+        this.climbUuidKilter = climbUuid;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public int getPp() {
-        return pp;
+    public int getPpUnweighted() {
+        return ppUnweighted;
     }
 
-    public void setPp(int pp) {
-        this.pp = pp;
+    public void setPpUnweighted(int pp) {
+        this.ppUnweighted = pp;
     }
 
     public int getAngle() {
         return angle;
     }
 
-    public String getClimbUuid() {
-        return climbUuid;
+    public String getClimbUuidKilter() {
+        return climbUuidKilter;
     }
 
-    public String getUuid() {
-        return uuid;
+    public String getUuidKilter() {
+        return uuidKilter;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setUuidKilter(String uuid) {
+        this.uuidKilter = uuid;
     }
 
-    public int getAttempt_id() {
-        return attempt_id;
+    public int getAttemptId() {
+        return attemptId;
     }
 
-    public int getBid_count() {
-        return bid_count;
+    public int getBidCount() {
+        return bidCount;
     }
 
     public int getDifficulty() {
@@ -116,12 +148,12 @@ public class Climb {
         this.angle = angle;
     }
 
-    public void setAttempt_id(int attempt_id) {
-        this.attempt_id = attempt_id;
+    public void setAttemptId(int attempt_id) {
+        this.attemptId = attempt_id;
     }
 
-    public void setBid_count(int bid_count) {
-        this.bid_count = bid_count;
+    public void setBidCount(int bid_count) {
+        this.bidCount = bid_count;
     }
 
     public void setComment(String comment) {
@@ -136,8 +168,8 @@ public class Climb {
         this.difficulty = difficulty;
     }
 
-    public void setIs_mirror(boolean is_mirror) {
-        this.is_mirror = is_mirror;
+    public void setIsMirror(boolean is_mirror) {
+        this.isMirror = is_mirror;
     }
 
     public void setIs_benchmark(boolean is_benchmark) {

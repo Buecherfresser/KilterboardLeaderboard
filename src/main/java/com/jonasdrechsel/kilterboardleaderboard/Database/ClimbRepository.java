@@ -7,9 +7,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ClimbRepository extends JpaRepository<Climb, String> {
-    Optional<List<Climb>> findClimbsByUserIdOrderByPpDesc(long userId);
+//    Optional<List<Climb>> findClimbsByUserIdOrderByPpWeightedDesc(long userId);
+
+    Optional<List<Climb>> findClimbsByUserId(long userId);
 
     void removeClimbsByUserId(long userId);
 
-    Optional<List<Climb>> findClimbsByClimbUuid(String uuid);
+    Optional<List<Climb>> findClimbsByClimbUuidKilter(String uuid);
+
+    Optional<List<Climb>> findClimbsByUuidKilter(String uuid);
 }

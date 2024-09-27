@@ -6,8 +6,13 @@ import com.jonasdrechsel.kilterboardleaderboard.KilterExternalApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -23,62 +28,152 @@ public class LeaderboardService {
         this.kilterApi = kilterExternalApiService;
     }
 
-    public List<KilterUser> refreshLeaderboard() {
+    public void refreshLeaderboard() {
         List<KilterUser> users = userService.getAll();
         for (KilterUser user : users) {
-            updateClimbs(user);
+            addNewClimbsAndReload(user);
         }
-        return userService.getOrderedByPp();
     }
 
-    public Climb[] updateClimbs(KilterUser user) {
-        long userId = user.getId();
-        Climb[] climbs;
-        try {
-            climbs = kilterApi.getClimbs(user.getId());
-        } catch (Error e) {
-            throw new Error("User does not have any climbs yet.");
+    public void refreshLeaderboardCompletely() {
+        List<KilterUser> users = userService.getAll();
+        for (KilterUser user : users) {
+            reloadAllClimbs(user);
         }
-        if (climbs == null) {
-            user.setPp(0);
-            userService.saveUser(user);
-            return new Climb[0];
+    }
+
+    public void reloadAllClimbs(KilterUser user) {
+        Climb[] climbsFromApi = kilterApi.getClimbs(user.getId());
+        HashSet<String> newClimbs = new HashSet<>();
+        for (Climb climb : climbsFromApi) {
+            climb.setId(climb.getUuidKilter() + climb.getClimbUuidKilter());
+            newClimbs.add(climb.getId());
         }
+        reloadClimbs(user, climbsFromApi, newClimbs);
+    }
+
+    public void addNewClimbsAndReload(KilterUser user) {
+        List<Climb> climbsInDatabase = climbService.getClimbs(user.getId());
+        Climb[] climbsFromApi = kilterApi.getClimbs(user.getId());
+        HashSet<String> newClimbs = new HashSet<>();
+        // make a Hashset for id of climbsInDatabase
+        HashSet<String> ids = new HashSet<>();
+        for (Climb c : climbsInDatabase) {
+            ids.add(c.getId());
+        }
+        for (Climb c : climbsFromApi) {
+            if (c.getId() == null) {
+                c.setId(c.getUuidKilter() + c.getClimbUuidKilter());
+            }
+            if (!ids.contains(c.getId())) {
+//                System.out.println("Adding new climb with id '" + c.getUuidKilter() + "' to user " + user.getName());
+                climbsInDatabase.add(c);
+                newClimbs.add(c.getId());
+            }
+        }
+        reloadClimbs(user, climbsInDatabase.toArray(new Climb[0]), newClimbs);
+    }
+
+    // TODO: replace climbs and newClimbsIds with oldClimbs and newClimbs to make this function more reusable
+    public void reloadClimbs(KilterUser user, Climb[] climbs, HashSet<String> newClimbsIds) {
+        DateTimeFormatter kilterFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//        Climb[] climbs = kilterApi.getClimbs(user.getId());
+//        if (climbs == null) {
+//            user.setPpWeighted(0);
+//            userService.saveUser(user);
+//            return;
+//        }
         Arrays.parallelSetAll(climbs, i -> climbService.addNameToClimb(climbs[i]));
         Arrays.sort(climbs, new Comparator<Climb>() {
             @Override
             public int compare(Climb o1, Climb o2) {
-                return Integer.compare(o1.getDifficulty(), o2.getDifficulty()) * -1;
+                if (o1.getDifficulty() != o2.getDifficulty()) {
+                    return Integer.compare(o1.getDifficulty(), o2.getDifficulty()) * -1;
+                }
+                LocalDateTime o1Date = LocalDateTime.parse(o1.getDate(), kilterFormatter);
+                LocalDateTime o2Date = LocalDateTime.parse(o2.getDate(), kilterFormatter);
+                return o1Date.compareTo(o2Date);
             }
         });
-        int totalPp = 0;
+        int weightedPP = 0;
+        int unweightedPP = 0;
+        int weightedPPSeason1 = 0;
+        int unweightedPPSeason1 = 0;
         // Field 1: pure PP, Field 2: weighted PP
-        int[] pp = new int[2];
+        int[] pp;
+        int[] ppSeason1;
         int ascents = 0;
+        int ascentsSeason1 = 0;
         int flashes = 0;
+        int flashesSeason1 = 0;
         int highestDifficulty = 0;
+        LocalDateTime season1Start = LocalDate.of(2024, 8, 26).atStartOfDay();
+        LocalDateTime season1End = LocalDate.of(2024, 9, 26).atStartOfDay();
+        boolean changeToClimb = false;
         for (Climb c : climbs) {
-            pp = climbService.calculatePp(c.getDifficulty(), 0);
-            c.setPp(pp[0]);
-            c.setPpWeighted(pp[1]);
-            climbService.saveClimb(c);
+            pp = climbService.calculatePp(c.getDifficulty(), ascents);
+            if (c.getPpUnweighted() != pp[0]) {
+                c.setPpUnweighted(pp[0]);
+                changeToClimb = true;
+            }
             if (c.getType().equals("ascent")) {
-                pp = climbService.calculatePp(c.getDifficulty(), ascents);
-                totalPp += pp[1];
+                if (c.getPpWeighted() != pp[1]) {
+                    c.setPpWeighted(pp[1]);
+                    changeToClimb = true;
+                }
+                unweightedPP += pp[0];
+                weightedPP += pp[1];
+                try {
+                    LocalDateTime climbDate = LocalDateTime.parse(c.getDate(), kilterFormatter);
+                    if (climbDate.isAfter(season1Start) && climbDate.isBefore(season1End)) {
+                        ppSeason1 = climbService.calculatePp(c.getDifficulty(), ascentsSeason1);
+                        if (c.getPpUnweightedSeason1() != ppSeason1[0]) {
+                            System.out.println(ascents);
+                            c.setPpUnweightedSeason1(ppSeason1[0]);
+                            changeToClimb = true;
+                        }
+                        if (c.getPpWeightedSeason1() != ppSeason1[1]) {
+                            System.out.println(ascents);
+                            c.setPpWeightedSeason1(ppSeason1[1]);
+                            changeToClimb = true;
+                        }
+                        unweightedPPSeason1 += ppSeason1[0];
+                        weightedPPSeason1 += ppSeason1[1];
+                        ascentsSeason1++;
+                    }
+                } catch (DateTimeParseException e) {
+                    System.out.println(e.getMessage());
+                }
                 ascents++;
-                if (c.getBid_count() == 1) {
+                if (c.getBidCount() == 1) {
                     flashes++;
                 }
             }
             if (c.getDifficulty() > highestDifficulty) {
                 highestDifficulty = c.getDifficulty();
             }
+            // if PP was changed or climb is new
+            if (changeToClimb || newClimbsIds.contains(c.getId())) {
+                climbService.saveClimb(c);
+            }
+            changeToClimb = false;
         }
-        user.setPp(totalPp);
         user.setAscents(ascents);
         user.setFlashes(flashes);
         user.setHighestDifficulty(highestDifficulty);
+        user.setPpWeighted(weightedPP);
+        user.setPpUnweighted(unweightedPP);
+        user.setPpUnweightedSeason1(unweightedPPSeason1);
+        user.setPpWeightedSeason1(weightedPPSeason1);
         userService.saveUser(user);
-        return climbs;
+    }
+
+    public List<KilterUser> getLeaderboard() {
+        return userService.getOrderedByPp();
+    }
+
+    public KilterUser addUser(KilterUser kilterUser) {
+        reloadAllClimbs(kilterUser);
+        return kilterUser;
     }
 }

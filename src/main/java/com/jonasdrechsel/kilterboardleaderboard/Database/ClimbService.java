@@ -44,7 +44,7 @@ public class ClimbService {
     }
 
     public List<Climb> getClimbs(long id) {
-        Optional<List<Climb>> optionalClimbList = climbRepository.findClimbsByUserIdOrderByPpDesc(id);
+        Optional<List<Climb>> optionalClimbList = climbRepository.findClimbsByUserId(id);
         return optionalClimbList.orElseGet(ArrayList::new);
     }
 
@@ -54,16 +54,20 @@ public class ClimbService {
     }
 
     public Climb addNameToClimb(Climb climb) {
+        if (climb.getName() != null) {
+            return climb;
+        }
         String name = "";
-        Optional<List<Climb>> optionalClimbsDatabase = climbRepository.findClimbsByClimbUuid(climb.getClimbUuid());
+        Optional<List<Climb>> optionalClimbsDatabase = climbRepository.findClimbsByClimbUuidKilter(climb.getClimbUuidKilter());
         List<Climb> climbsDatabase = optionalClimbsDatabase.orElseGet(ArrayList::new);
         for (Climb c : climbsDatabase) {
             if (!c.getName().isBlank()) {
                 name = c.getName();
+                break;
             }
         }
         if (name.isBlank()) {
-            String response = kilterApi.getClimbName(climb.getClimbUuid()).block();
+            String response = kilterApi.getClimbName(climb.getClimbUuidKilter()).block();
             name = extractH1Content(response);
         }
         climb.setName(name);
