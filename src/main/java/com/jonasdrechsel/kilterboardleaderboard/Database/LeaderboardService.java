@@ -128,12 +128,10 @@ public class LeaderboardService {
                     if (climbDate.isAfter(season1Start) && climbDate.isBefore(season1End)) {
                         ppSeason1 = climbService.calculatePp(c.getDifficulty(), ascentsSeason1);
                         if (c.getPpUnweightedSeason1() != ppSeason1[0]) {
-                            System.out.println(ascents);
                             c.setPpUnweightedSeason1(ppSeason1[0]);
                             changeToClimb = true;
                         }
                         if (c.getPpWeightedSeason1() != ppSeason1[1]) {
-                            System.out.println(ascents);
                             c.setPpWeightedSeason1(ppSeason1[1]);
                             changeToClimb = true;
                         }
