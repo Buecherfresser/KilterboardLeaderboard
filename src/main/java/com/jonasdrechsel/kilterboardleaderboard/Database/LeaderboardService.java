@@ -157,7 +157,9 @@ public class LeaderboardService {
             changeToClimb = false;
         }
         user.setAscents(ascents);
+        user.setAscentsSeason1(ascentsSeason1);
         user.setFlashes(flashes);
+        user.setFlashesSeason1(flashesSeason1);
         user.setHighestDifficulty(highestDifficulty);
         user.setPpWeighted(weightedPP);
         user.setPpUnweighted(unweightedPP);

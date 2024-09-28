@@ -34,7 +34,9 @@ public class KilterUser {
     private int ppWeightedSeason1;
     private int ppUnweightedSeason1;
     private int ascents;
+    private int ascentsSeason1;
     private int flashes;
+    private int flashesSeason1;
     private int highestDifficulty;
 
 //    public Long getKey() {
@@ -44,6 +46,22 @@ public class KilterUser {
 //    public void setKey(Long key) {
 //        this.userKey = userKey;
 //    }
+
+    public int getAscentsSeason1() {
+        return ascentsSeason1;
+    }
+
+    public void setAscentsSeason1(int ascentsSeason1) {
+        this.ascentsSeason1 = ascentsSeason1;
+    }
+
+    public void setFlashesSeason1(int flashesSeason1) {
+        this.flashesSeason1 = flashesSeason1;
+    }
+
+    public int getFlashesSeason1() {
+        return flashesSeason1;
+    }
 
     public int getPpUnweightedSeason1() {
         return ppUnweightedSeason1;
