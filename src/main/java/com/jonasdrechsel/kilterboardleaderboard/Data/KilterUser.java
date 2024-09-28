@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "users")
 public class KilterUser {
@@ -38,14 +40,15 @@ public class KilterUser {
     private int flashes;
     private int flashesSeason1;
     private int highestDifficulty;
+    private LocalDateTime lastUpdate;
 
-//    public Long getKey() {
-//        return userKey;
-//    }
-//
-//    public void setKey(Long key) {
-//        this.userKey = userKey;
-//    }
+    public LocalDateTime getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate(LocalDateTime lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
 
     public int getAscentsSeason1() {
         return ascentsSeason1;

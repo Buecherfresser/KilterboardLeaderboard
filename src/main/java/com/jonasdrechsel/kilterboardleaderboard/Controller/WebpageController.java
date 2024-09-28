@@ -31,12 +31,6 @@ public class WebpageController {
         }
     }
 
-//    @GetMapping({"/kilterleaderboard", "/Kilterleaderboard"})
-//    public String serveLeaderboard() {
-//        // This will serve the index.html located in /static/Kilterleaderboard/
-//        return "../static/Kilterleaderboard/index.html";
-//    }
-
     @GetMapping({"/kilterleaderboard", "/Kilterleaderboard", "/Kilterleaderboard/", "/kilterleaderboard/"})
     public RedirectView redirectWithUsingRedirectView(
             RedirectAttributes attributes) {

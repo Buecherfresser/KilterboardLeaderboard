@@ -109,6 +109,7 @@ public class LeaderboardService {
         int highestDifficulty = 0;
         LocalDateTime season1Start = LocalDate.of(2024, 8, 26).atStartOfDay();
         LocalDateTime season1End = LocalDate.of(2024, 9, 26).atStartOfDay();
+        LocalDateTime now = LocalDateTime.now();
         boolean changeToClimb = false;
         for (Climb c : climbs) {
             pp = climbService.calculatePp(c.getDifficulty(), ascents);
@@ -165,6 +166,7 @@ public class LeaderboardService {
         user.setPpUnweighted(unweightedPP);
         user.setPpUnweightedSeason1(unweightedPPSeason1);
         user.setPpWeightedSeason1(weightedPPSeason1);
+        user.setLastUpdate(now);
         userService.saveUser(user);
     }
 
